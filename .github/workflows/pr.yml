@@ -1,0 +1,27 @@
+name: Check new PR
+on:
+  pull_request
+jobs:
+  build-openvino-linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout vcpkg
+        uses: actions/checkout@v4
+      - run: ./bootstrap-vcpkg.sh
+      - run: ./vcpkg install openvino:x64-linux-dynamic
+      - run: ./vcpkg install openvino:x64-linux
+  build-openvino-windows-x64:
+    runs-on: windows-latest
+    steps:
+      - name: checkout vcpkg
+        uses: actions/checkout@v4
+      - run: ./bootstrap-vcpkg.bat
+      - run: ./vcpkg install openvino:x64-windows-static
+      - run: ./vcpkg install openvino:x64-windows
+  build-openvino-linux-arm64:
+    runs-on: self-hosted
+    steps:
+      - name: checkout vcpkg
+        uses: actions/checkout@v4
+      - run: ./bootstrap-vcpkg.sh
+      - run: ./vcpkg install openvino:arm64-linux
