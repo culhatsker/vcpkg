@@ -1,61 +1,14 @@
-vcpkg_download_distfile(PATCH_002_PROTOBUF # https://github.com/openvinotoolkit/openvino/pull/27510
-    URLS https://github.com/openvinotoolkit/openvino/commit/103c3b72259648c990970afb8ce2bec489fcf583.patch?full_index=1
-    SHA512 315eb2f651b55fc70a4d6faeb1ac1b5d90d53b9010fdc98f3417beb86854ed733eba105ea51de8795471c5e84340b96cf17d511ea3fe3447c5f961ded661a947
-    FILENAME openvinotoolkit-openvino-103c3b72259648c990970afb8ce2bec489fcf583.patch
-)
-
-vcpkg_download_distfile(PATCH_003_CODE_SNIPPETS_TEMPALTE # https://github.com/openvinotoolkit/openvino/pull/28172
-    URLS https://github.com/openvinotoolkit/openvino/commit/8d74cbb8e1af7c66ccee202fec5a18565e5b37b0.patch?full_index=1
-    SHA512 24640b608c2eb78b948c257a8bc9bb0c2f05e4d6cb04c23cf7546a3191a73e163b4732590eb8e5b834765bb78472e1454785c20c74a4dcbaf40a34ff14fafc83
-    FILENAME openvinotoolkit-openvino-8d74cbb8e1af7c66ccee202fec5a18565e5b37b0.patch
-)
-
-vcpkg_download_distfile(PATCH_004_ADD_CHRONO # https://github.com/openvinotoolkit/openvino/pull/28192
-    URLS https://github.com/openvinotoolkit/openvino/commit/9d78056f243b1f8d5c0331420416c98a005e5945.patch?full_index=1
-    SHA512 8b44e04ed88945174b17c6dada2ce3065340b6278a140717599ec0c33f548679424c5acd36b5edc10f2ed74c3288626c2b47a1af0ab530ed6a7ca868fe88ad4b
-    FILENAME openvinotoolkit-openvino-9d78056f243b1f8d5c0331420416c98a005e5945.patch
-)
-
-vcpkg_download_distfile(PATCH_005_LEVEL_ZERO_FROM_SYSTEM # https://github.com/openvinotoolkit/openvino/pull/27633
-    URLS https://github.com/openvinotoolkit/openvino/commit/5c2b9ac6b4daffc24762aea2f6dacdaa70d5ae8c.patch?full_index=1
-    SHA512 85c2422ef78b853dd9937319cf16c915c3ce4a143f3a0628ffd4edf0ceac4c26d90e3ffd9d6c7f4f3f72fc631c4860fcfcbf96ce37134b31fc45ccae4f3df308
-    FILENAME openvinotoolkit-openvino-5c2b9ac6b4daffc24762aea2f6dacdaa70d5ae8c.patch
-)
-
-vcpkg_download_distfile(PATCH_006_LEVEL_ZERO_AT_RUNTIME # https://github.com/openvinotoolkit/openvino/pull/27659
-    URLS https://github.com/openvinotoolkit/openvino/commit/99d7cd4bc4492b81a99bc41e2d2469da1a929491.patch?full_index=1
-    SHA512 091ad0328feb0ec9a59a9728ede444c408db9e7532b7a85b62b63f059fa766833b9c0b2d1c8e5972476652b24d62cf8bdb0313b197e2ea5e0b64c79a0a0da1b1
-    FILENAME openvinotoolkit-openvino-99d7cd4bc4492b81a99bc41e2d2469da1a929491.patch
-)
-
-vcpkg_download_distfile(PATCH_007_OPENCL_V2024_10_24 # https://github.com/openvinotoolkit/openvino/pull/28275
-    URLS https://github.com/openvinotoolkit/openvino/commit/120ad760494eeb513ea957bdbc655b6ad07bce42.patch?full_index=1
-    SHA512 45a06bf54cef7d619b862f3219dd1225fb38bb653b2f09191d57e945a2df08621b15a27463429d5d72a18dfe05b113b94555cea0cabab0da36c9d89a2757196a
-    FILENAME openvinotoolkit-openvino-120ad760494eeb513ea957bdbc655b6ad07bce42.patch
-)
-
-vcpkg_download_distfile(PATCH_008_FIX_LEVEL_ZERO_SYSTEM # https://github.com/openvinotoolkit/openvino/pull/28241
-    URLS https://github.com/openvinotoolkit/openvino/commit/65f6ce8c5cd0ac5ae5f64fc1c533cc621475a105.patch?full_index=1
-    SHA512 e756d181658dee933ffb727d004276a8fc37f9cfc473b25b0e0b5043234b1b2f021e1b26aa6513f7f40a9897d3c96b652aa7d81521205602f673d73a74cb5621
-    FILENAME openvinotoolkit-openvino-65f6ce8c5cd0ac5ae5f64fc1c533cc621475a105.patch
-)
 
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO openvinotoolkit/openvino
-    REF "${VERSION}"
-    SHA512 5bfe9c0b79b8f8bed7f39b78003424d4b7146d7c6afafc668752a0c8c45558fc8f37cfc26f783beb73c6919cb65313f24fd2e30c81651b34abf74c43c3bb7e32
+    # REF "${VERSION}"
+    REF "e2218de05b67a5a7567a03fbd1ed8eb4a6c96f42"
+    SHA512 85f5d20480936bf36af04781069d5c98d0142c757e052c9d590cad9d44a613990b421e126dd07db1ef6f85a3c5975d0e200fe29d836d63bcaad930f87244f68b
     HEAD_REF master
     PATCHES
         # vcpkg specific patch, because OV creates a file in source tree, which is prohibited
         001-disable-tools.patch
-        "${PATCH_002_PROTOBUF}"
-        "${PATCH_003_CODE_SNIPPETS_TEMPALTE}"
-        "${PATCH_004_ADD_CHRONO}"
-        "${PATCH_005_LEVEL_ZERO_FROM_SYSTEM}"
-        "${PATCH_006_LEVEL_ZERO_AT_RUNTIME}"
-        "${PATCH_007_OPENCL_V2024_10_24}"
-        "${PATCH_008_FIX_LEVEL_ZERO_SYSTEM}"
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
@@ -84,8 +37,8 @@ if(ENABLE_INTEL_GPU)
     vcpkg_from_github(
         OUT_SOURCE_PATH DEP_SOURCE_PATH
         REPO oneapi-src/oneDNN
-        REF 0f269193c7466313888d3338209d0d06a22cc6fa
-        SHA512 892a32b930fbba3364e2ea9ee47bf6faba3b36cb99e836bcc5d57a30a368e5061bb7194219f30dbcede18e3ad5e671c9cfa4192799ac53cfa71706e03556e5bd
+        REF 706a3ce3b391cf1d8a904a8efa981c70078719eb
+        SHA512 aebb705f9c785f5522f204a7cece95616c801d73e50b07ad5f5a53eec006a3259e92de59f81fbda9cd1b784916010cba738af76bd129dbca52ce5cf17d6b6594
     )
     file(COPY "${DEP_SOURCE_PATH}/" DESTINATION "${SOURCE_PATH}/src/plugins/intel_gpu/thirdparty/onednn_gpu")
 
@@ -98,8 +51,8 @@ if(ENABLE_INTEL_CPU)
     vcpkg_from_github(
         OUT_SOURCE_PATH DEP_SOURCE_PATH
         REPO openvinotoolkit/oneDNN
-        REF c60a9946aa2386890e5c9f5587974facb7624227
-        SHA512 cc91f5b2ece1c3f14af308e3da436447d07964fa5ffa848c571fe67197a367673bf7bf9cd979fab0c9b216f92c611bd8df7018ec8e080f10759582629c10cb9d
+        REF c7ecd8fc43610c82af317c178d28630bd948cb04
+        SHA512 efd85a68b74df187d08ad1b7c80dfbbe2f49e600eb0e2edb3fe768d324eca865a6b258089509f66423b5b1112b9ac03ab6a8dac2bc04921813a41782d436f0d4
     )
     file(COPY "${DEP_SOURCE_PATH}/" DESTINATION "${SOURCE_PATH}/src/plugins/intel_cpu/thirdparty/onednn")
 
