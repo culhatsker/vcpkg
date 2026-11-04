@@ -1,6 +1,7 @@
 name: Check new PR
 on:
-  pull_request
+  pull_request:
+  workflow_dispatch:
 jobs:
   build-openvino-linux-x64:
     runs-on: ubuntu-latest
