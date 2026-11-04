@@ -1,0 +1,51 @@
+name: Check new PR
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Checkout to specified ref'
+        required: true
+        type: string
+      windows_dynamic:
+        description: 'Build for x64-windows'
+        default: true
+        type: boolean
+      windows_static:
+        description: 'Build for x64-windows-static'
+        default: false
+        type: boolean
+      linux_static:
+        description: 'Build for x64-linux'
+        default: true
+        type: boolean
+      linux_dynamic:
+        description: 'Build for x64-linux-dynamic'
+        default: false
+        type: boolean
+jobs:
+  build-openvino-linux-x64:
+    runs-on: ubuntu-latest
+    if: inputs.linux_dynamic || inputs.linux_static
+    steps:
+      - name: checkout vcpkg
+        uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.ref}}
+      - run: ./bootstrap-vcpkg.sh
+      - run: ./vcpkg install openvino:x64-linux-dynamic
+        if: inputs.linux_dynamic
+      - run: ./vcpkg install openvino:x64-linux
+        if: inputs.linux_static
+  build-openvino-windows-x64:
+    runs-on: windows-latest
+    if: inputs.windows_dynamic || inputs.windows_static
+    steps:
+      - name: checkout vcpkg
+        uses: actions/checkout@v4
+        with:
+          ref: ${{inputs.ref}}
+      - run: ./bootstrap-vcpkg.bat
+      - run: ./vcpkg install openvino:x64-windows-static
+        if: inputs.windows_static
+      - run: ./vcpkg install openvino:x64-windows
+        if: inputs.windows_dynamic
