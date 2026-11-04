@@ -1,0 +1,49 @@
+diff --git a/src/plugins/intel_cpu/CMakeLists.txt b/src/plugins/intel_cpu/CMakeLists.txt
+index 12fb2458a5..b9fe4afa9d 100644
+--- a/src/plugins/intel_cpu/CMakeLists.txt
++++ b/src/plugins/intel_cpu/CMakeLists.txt
+@@ -57,9 +57,11 @@ if(NOT BUILD_SHARED_LIBS)
+     list(APPEND onednn_symbols dnnl oneapi)
+
+     # redefine all collected symbols
++    set(onednn_renamed_definitions_file ${CMAKE_CURRENT_BINARY_DIR}/src/__generated_onednn_glue.h)
+     foreach(onednn_symbol IN LISTS onednn_symbols)
+         if(NOT onednn_symbol MATCHES "^#.+")
+-            list(APPEND onednn_renamed_definitions ${onednn_symbol}=ov_cpu_${onednn_symbol})
++            # list(APPEND onednn_renamed_definitions ${onednn_symbol}=ov_cpu_${onednn_symbol})
++            file(APPEND ${onednn_renamed_definitions_file} "#define ${onednn_symbol} ov_cpu_${onednn_symbol}\n")
+         endif()
+     endforeach()
+ endif()
+@@ -236,7 +238,12 @@ ov_add_plugin(NAME ${TARGET_NAME}
+               ADD_CLANG_TIDY)
+
+ if(NOT BUILD_SHARED_LIBS)
+-    target_compile_definitions(${TARGET_NAME} PRIVATE ${onednn_renamed_definitions})
++    # target_compile_definitions(${TARGET_NAME} PRIVATE ${onednn_renamed_definitions})
++    if(MSVC)
++        target_compile_options(${TARGET_NAME} BEFORE PRIVATE /FI ${onednn_renamed_definitions_file})
++    else()
++        target_compile_options(${TARGET_NAME} BEFORE PRIVATE --include ${onednn_renamed_definitions_file})
++    endif()
+ endif()
+
+ # give a different file name depending on target platform architecture
+diff --git a/src/plugins/intel_cpu/tests/CMakeLists.txt b/src/plugins/intel_cpu/tests/CMakeLists.txt
+index 0c652c19e3..bc3bfc7ba9 100644
+--- a/src/plugins/intel_cpu/tests/CMakeLists.txt
++++ b/src/plugins/intel_cpu/tests/CMakeLists.txt
+@@ -5,7 +5,12 @@
+ # Static oneDNN exports use the CPU-plugin-prefixed symbols. Apply the matching
+ # definitions to all CPU test targets without leaking them to third-party targets.
+ if(NOT BUILD_SHARED_LIBS)
+-    add_compile_definitions(${onednn_renamed_definitions})
++    # add_compile_definitions(${onednn_renamed_definitions})
++    if(MSVC)
++        add_compile_options(/FI ${onednn_renamed_definitions_file})
++    else()
++        add_compile_options(--include ${onednn_renamed_definitions_file})
++    endif()
+ endif()
+
+ # Suppress warnings in all test code (applies to unit and functional tests)

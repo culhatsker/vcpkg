@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 714af6c130..a4819b5457 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -57,7 +57,12 @@ set(PROJECT_VERSION "3.13.0")
+ project(${PROJECT_NAME} VERSION "${PROJECT_VERSION}" LANGUAGES C CXX)
+
+ if(NOT BUILD_SHARED_LIBS)
+-    add_compile_definitions(${onednn_renamed_definitions})
++    # add_compile_definitions(${onednn_renamed_definitions})
++    if(MSVC)
++        add_compile_options(/FI ${onednn_renamed_definitions_file})
++    else()
++        add_compile_options(--include ${onednn_renamed_definitions_file})
++    endif()
+ endif()
+
+ if (NOT CMAKE_SIZEOF_VOID_P EQUAL 8)

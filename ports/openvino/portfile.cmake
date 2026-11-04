@@ -12,6 +12,7 @@ vcpkg_from_github(
 
         levelzero-prepareheaders.patch
         fix-onednn-include-order.patch
+        fix-onednn-cpu-command-length.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
@@ -56,6 +57,8 @@ if(ENABLE_INTEL_CPU)
         REPO openvinotoolkit/oneDNN
         REF 1289c3b65dd6a119a5ed12a816517d9c3a21d81b
         SHA512 134edf0b33797c4d97aaf8e3bf5bdb8f9f8607fd6716392712148054f8dcedfef31aa775e0d3e3895d68a5c43e377e7a54cd1d27111d47a4d23d9b6e25a2d862
+        PATCHES
+            fix-onednn-cpu-command-length-internal.patch
     )
     file(COPY "${DEP_SOURCE_PATH}/" DESTINATION "${SOURCE_PATH}/src/plugins/intel_cpu/thirdparty/onednn")
 
